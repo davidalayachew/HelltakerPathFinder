@@ -118,7 +118,6 @@ switch (c2)
          switch (c1)
          {
          
-			//Once we get deconstruction patterns and/or unnamed patterns, I can remove playerHasSecret and playerFloor from scope
             case Player p
                   -> switch (c2)
                      {
