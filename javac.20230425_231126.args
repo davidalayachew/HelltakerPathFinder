@@ -1,0 +1,6 @@
+--enable-preview
+--source
+21
+-d
+classes
+Main.java
