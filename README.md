@@ -1,5 +1,6 @@
 # HelltakerPathFinder
 
+This is a path finding algorithm written in Java 20/21 for the game Helltaker. Specifically, this project solves the non-DLC levels of Helltaker.
 
 Helltaker is a puzzle game, where the player is on a 2D Grid, and must get to the goal with only a limited number of steps.
 
