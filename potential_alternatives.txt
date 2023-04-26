@@ -1,0 +1,181 @@
+if (c1 instanceof Player p) {
+	
+	if (c2 instanceof Player) {
+		return moreThan1Player;
+	} else if (c2 instanceof Wall) {
+		return playerCantMove;
+	} else if (c2 instanceof Goal) {
+		return playerAlreadyWon;
+	} else if (c2 instanceof Lock) {
+		return playerHasKey ? (__) -> new Changed(p.leavesBehind(), p.floor(EMPTY), c3)
+		                    : playerCantMove;
+
+	//so far, this isn't that bad. The tests are on the same x-axis as the values
+	//returned and the word instanceof is mucking up the logic, but I would still
+	//consider this readable
+
+	} else if (c2 instanceof BasicCell bc2) {
+		
+		final var nonPlayerOccupant2 = bc2.nonPlayerOccupant();
+		final var underneath2 = bc2.underneath();
+		
+		//I am allowed to use a switch expression here because for enums, it is 
+		//not pattern matching. That said, since it is only 3 values, it's
+		//basically the same as if I used another level of if else
+		
+		return switch (nonPlayerOccupant2) {
+			
+			case VACANT -> (__) -> new Changed(p.leavesBehind(), p.underneath(underneath2), c3);
+			case BLOCK  -> {
+				
+				//this is where it starts to get ugly. Mixing statements and expressions like this
+				//is error prone the deeper I go. But even ignoring that, we lost our exhaustiveness. If
+				//we decide to add a new case, we might forget that we're missing a branch here
+				//until it fails during runtime. That would be doubly true if I swapped out my enum
+				//switch expression for an if statement like I commented earlier on in this example,
+				//forcing me to choose between 
+				
+				if (c3 instanceof Player) {
+					yield moreThan1Player;
+				} else if (c3 instanceof BasicCell bc3) {
+				
+					yield switch (bc3.nonPlayerOccupant()) {
+						
+						case VACANT -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), new BasicCell(bc3.underneath(), nonPlayerOccupant2));
+						case BLOCK,
+							  ENEMY  -> playerCantMove;
+					
+					};
+					
+				} else if (c3 instanceof ....)
+					
+				//I could continue, but the point has been made.
+				
+				//One thing I would say, I can resolve the x-axis problem by exploiting Java's whitespace rules.
+				//Like this.
+				
+				/**
+					if (c2 instanceof Player)      {return moreThan1Player;
+					} else if (c2 instanceof Wall) {return playerCantMove;
+					} else if (c2 instanceof Goal) {return playerAlreadyWon;
+					} else if (c2 instanceof Lock) {return playerHasKey 	? (__) -> new Changed(p.leavesBehind(), p.floor(EMPTY), c3)
+																			: playerCantMove;
+					} else if (c2 instanceof BasicCell bc2) {
+				*/
+				
+				//But that still leaves out exhaustiveness, which is the big reason I do this.
+				
+				//If I want exhaustiveness for all cases while actually TRYING all cases, then I must use switch expressions.
+				
+				//So, let me try again, this time with switch expressions.
+				
+			}
+			
+		};
+		
+	}
+	
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//I'll jump ahead to the part that matters.
+
+...
+switch (c2)
+{
+
+	case Player       -> moreThan1Player;
+	case Wall         -> playerCantMove;
+	case Goal         -> playerAlreadyWon;
+	case Lock         -> playerHasKey ? (__) -> new Changed(p.leavesBehind(), p.floor(EMPTY), c3) 
+									  : playerCantMove;
+	case BasicCell    -> switch (((BasicCell)c2).nonPlayerOccupant())
+	                     {
+							 ...
+							 //After proving that c2 is a BasicCell, the only way to get
+							 //its contents is with an explicit cast and a getter.
+							 //This just muddies the water in a different way, even
+							 //though now I have exhaustiveness.
+							 
+							 //So, to deal with this, I use switch patterns. And if I am 
+							 //using switch patterns, record patterns can be nested in to
+							 //keep things even more readable. A record pattern allows me
+							 //to only introduce the variables in scope that absolutely
+							 //need to be there, as opposed to storing each record into a
+							 //variable and then calling the relative getter. That widens
+							 //the domain of possible forward options unnecessarily, 
+							 //which causes me confusion and slows me down.
+						 };
+ ...
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+//and here is the final solution I came up with.
+
+	  
+	  final UnaryOperator<Triple> triple =
+         switch (c1)
+         {
+         
+			//Once we get deconstruction patterns and/or unnamed patterns, I can remove playerHasSecret and playerFloor from scope
+            case Player p
+                  -> switch (c2)
+                     {
+                     
+                        case Player __    -> moreThan1Player;
+                        case Wall()       -> playerCantMove;
+                        case Goal()       -> playerAlreadyWon;
+                        case Lock()       -> p.playerHasKey ? (__) -> new Changed(p.leavesBehind(), p.floor(EMPTY), c3) 
+                                                            : playerCantMove;
+                        case BasicCell(Underneath underneath2, var nonPlayerOccupant2)
+                              -> switch (nonPlayerOccupant2)
+                              {
+                              
+                                 case VACANT -> (__) -> new Changed(p.leavesBehind(), p.underneath(underneath2), c3);
+                                 case BLOCK
+                                       -> switch (c3)
+                                          {
+                                          
+                                             case Player __ -> moreThan1Player;
+                                             case BasicCell(var underneath3, var nonPlayerOccupant3)
+                                                   -> switch (nonPlayerOccupant3)
+                                                      {
+                                                      
+                                                         case VACANT -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), new BasicCell(underneath3, nonPlayerOccupant2));
+                                                         case BLOCK,
+                                                              ENEMY  -> playerCantMove;
+                                                      
+                                                      };
+                                             case Wall()    -> playerCantMove;
+                                             case Lock()    -> playerCantMove;
+                                             case Goal()    -> playerCantMove;
+                                          
+                                          };
+                                 case ENEMY
+                                       -> switch (c3)
+                                          {
+                                          
+                                             case Player __ -> moreThan1Player;
+                                             case BasicCell(var underneath3, var nonPlayerOccupant3)
+                                                   -> switch (nonPlayerOccupant3)
+                                                      {
+                                                      
+                                                         case VACANT -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), new BasicCell(underneath3, nonPlayerOccupant2));
+                                                         case BLOCK,
+                                                              ENEMY  -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), c3);
+                                                      
+                                                      };
+                                             case Wall()    -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), c3);
+                                             case Lock()    -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), c3);
+                                             case Goal()    -> (__) -> new Changed(p, new BasicCell(underneath2, VACANT), c3);
+                                          
+                                          };
+                              
+                              };
+                     
+                     };
+            case Cell c -> c1IsNotThePlayer;
+         
+         }
+         ;
