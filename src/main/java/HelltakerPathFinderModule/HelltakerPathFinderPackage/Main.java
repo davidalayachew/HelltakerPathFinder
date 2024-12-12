@@ -1,6 +1,6 @@
 
 package HelltakerPathFinderPackage;
-   
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Main
       //Main.solveSingleLevel(Boards.voidStrangerLevelB10());
    
    }
-   
+
    private static void solveSingleLevel(final Chapter chapter)
    {
    
@@ -179,22 +179,38 @@ public class Main
    public static CompletionState checkSuccess(Board board)
    {
    
-      if (board.checkSuccessful() instanceof CheckSuccessful(var atGoal, var gotAllSecrets))
-      {
-      
-         return atGoal && gotAllSecrets ? CompletionState.REACHED_GOAL_WITH_ALL_SECRETS
-              : atGoal                  ? CompletionState.REACHED_GOAL_WITHOUT_ALL_SECRETS
-              :                           CompletionState.DID_NOT_REACH_GOAL
-              ;
-      
-      }
-      
-      else
-      {
-      
-         throw new IllegalArgumentException();
-      
-      }
+      return
+         switch (board.checkSuccessful())
+         {
+         
+            case  CheckSuccessful(final boolean atGoal,  final boolean hasAllSecrets)  ->
+                  switch (atGoal)
+                  {
+                  
+                     case  true  ->
+                           switch (hasAllSecrets)
+                           {
+                           
+                              case  true  -> CompletionState.REACHED_GOAL_WITH_ALL_SECRETS;
+                              case  false -> CompletionState.REACHED_GOAL_WITHOUT_ALL_SECRETS;
+                           
+                           }
+                                 ;
+                     case  false ->
+                           switch (hasAllSecrets)
+                           {
+                           
+                              case  false -> CompletionState.DID_NOT_REACH_GOAL;
+                              case  true  -> throw new IllegalStateException();
+                           
+                           }
+                           ;
+                  
+                  }
+                  ;
+         
+         }
+         ;
    
    }
 
