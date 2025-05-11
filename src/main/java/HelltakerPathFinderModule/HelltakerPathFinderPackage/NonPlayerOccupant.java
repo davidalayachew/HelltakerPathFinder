@@ -6,5 +6,6 @@ sealed
       NonPlayerOccupant
          permits
             NoOccupant,
-            OneOccupant
+            Block,
+				Enemy
 {}

@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 import static HelltakerPathFinderPackage.NoOccupant.*;
-import static HelltakerPathFinderPackage.OneOccupant.*;
 import static HelltakerPathFinderPackage.Floor.*;
 
 public class Boards
@@ -27,9 +26,9 @@ public class Boards
    
       final List<Cell> cells = new ArrayList<>();
    
-      final BasicCell emptyBlock = new BasicCell(BLOCK);
-      final BasicCell vacant = new BasicCell(NO_OCCUPANT);
-      final BasicCell enemy = new BasicCell(ENEMY);
+      final BasicCell emptyBlock = new BasicCell(new Block());
+      final BasicCell vacant = new BasicCell(new NoOccupant());
+      final BasicCell enemy = new BasicCell(new Enemy());
       final Underneath spikes = new Underneath(SPIKY_FLOOR);
       final Underneath retractedSpikes = new Underneath(RETRACTABLE_EMPTY_FLOOR);
    
@@ -134,9 +133,9 @@ public class Boards
                ->
                   switch (occupant) 
                   {
-                     case  NO_OCCUPANT -> "_" + collectibleFloor.apply(collectible, floor);
-                     case  BLOCK       -> "B" + collectibleFloor.apply(collectible, floor);
-                     case  ENEMY       -> "E" + collectibleFloor.apply(collectible, floor);
+                     case  NoOccupant() -> "_" + collectibleFloor.apply(collectible, floor);
+                     case  Block()      -> "B" + collectibleFloor.apply(collectible, floor);
+                     case  Enemy()      -> "E" + collectibleFloor.apply(collectible, floor);
                   }
                   ;
          

@@ -1,24 +1,19 @@
 
 package HelltakerPathFinderPackage;
    
-public enum NoOccupant implements NonPlayerOccupant
+public record NoOccupant() implements NonPlayerOccupant
 {
 
-   NO_OCCUPANT,
-   ;
+	//I turned this from an enum to a static field PURELY because
+	// we don't have constant patterns yet.
+	public static final NoOccupant NO_OCCUPANT = new NoOccupant();
 
-   @Override
-   public String toString()
-   {
+	@Override
+	public String toString()
+	{
    
-      return
-         switch (this)
-         {
-         
-            case NO_OCCUPANT -> "_";
-         
-         };
+		return "_";
    
-   }
+	}
 
 }
