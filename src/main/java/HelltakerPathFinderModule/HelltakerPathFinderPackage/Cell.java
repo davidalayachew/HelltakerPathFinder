@@ -7,9 +7,8 @@ sealed
    interface
       Cell
          permits
-            InteractiveCell,
-            Player,
-            Wall
+				Player,
+				NonPlayer
 {
 
    Cell toggleSpikes();

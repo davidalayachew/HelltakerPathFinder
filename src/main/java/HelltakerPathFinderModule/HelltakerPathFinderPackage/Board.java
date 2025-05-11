@@ -512,6 +512,7 @@ public record Board(List<List<Cell>> board)
 		final UnaryOperator<Triple> triple = 
 			switch (new Path(c1, c2, c3))
 			{	//        | Cell1  | Cell2                                                   | Cell3                                           |
+				case Path( NonPlayer _, _, _) -> playerCanOnlyBeC1;
 				case Path( _,        Player _,                                                 _                                                ) -> playerCanOnlyBeC1;
 				case Path( _,        _,                                                        Player _                                         ) -> playerCanOnlyBeC1;
 				case Path( Player _, Wall(),                                                   _                                                ) -> playerCantMove;
@@ -531,7 +532,7 @@ public record Board(List<List<Cell>> board)
 				case Path( Player p, BasicCell(Underneath underneath2, Enemy()),               Wall()                                           ) -> _ -> new Changed(p, new BasicCell(underneath2, new NoOccupant()), c3);
 				case Path( Player p, BasicCell(Underneath underneath2, Enemy()),               Lock()                                           ) -> _ -> new Changed(p, new BasicCell(underneath2, new NoOccupant()), c3);
 				case Path( Player p, BasicCell(Underneath underneath2, Enemy()),               Goal()                                           ) -> _ -> new Changed(p, new BasicCell(underneath2, new NoOccupant()), c3);
-				default -> throw new IllegalArgumentException("what is this? -- " + new Path(c1, c2, c3));
+				// default -> throw new IllegalArgumentException("what is this? -- " + new Path(c1, c2, c3));
 			
 			}
 			;

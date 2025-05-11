@@ -5,7 +5,7 @@ sealed
    interface
       InteractiveCell
          extends
-            Cell
+            NonPlayer
          permits
             Goal,
             Lock,

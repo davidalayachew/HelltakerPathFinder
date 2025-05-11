@@ -22,7 +22,7 @@ s#q0src/test/java
 s#r0run/jGRASP_binaries
 s#t0ignore/help
 s#w0debug/canvases
-!3088;g
+!3180;g
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBasicCell.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBlock.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBoard.java
@@ -45,6 +45,7 @@ s#w0debug/canvases
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sInteractiveCell.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sLock.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sMain.java
+%\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNonPlayer.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNonPlayerOccupant.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNoOccupant.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sOutOfBoundsException.java
@@ -57,7 +58,7 @@ s#w0debug/canvases
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sUnderneath.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sWall.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%smodule-info.java
-!3088;f
+!3180;f
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBasicCell.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBlock.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sBoard.java
@@ -80,6 +81,7 @@ s#w0debug/canvases
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sInteractiveCell.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sLock.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sMain.java
+%\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNonPlayer.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNonPlayerOccupant.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sNoOccupant.java
 %\011src%smain%sjava%sHelltakerPathFinderModule%sHelltakerPathFinderPackage%sOutOfBoundsException.java

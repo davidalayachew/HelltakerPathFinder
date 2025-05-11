@@ -5,7 +5,7 @@ record
    Wall
       ()
       implements
-         Cell
+         NonPlayer
 {
 
    public Wall toggleSpikes()
